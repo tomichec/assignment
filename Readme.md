@@ -33,6 +33,7 @@ it properly.
 ```
 python3
 flask
+matplotlib
 ```
 
 ## Running the repository
@@ -55,5 +56,8 @@ The following endpoint will be exposed on your http://localhost:5000
 
 ```
 /avgTime/<username>/<reponame>
-/groupEvents/<username>/<reponame>
+/groupEvents/<username>/<reponame>?offset=60
+/showActors/<username>/<reponame>?offset=60
 ```
+where the `<username>` is a username of a github user and `<reponame>` is a name of a repository owned by the user.
+

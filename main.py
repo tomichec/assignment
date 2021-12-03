@@ -35,6 +35,20 @@ def totalEvents(events, offset = 24*60):
 
     return E
 
+def eventActors(events, offset = 24*60):
+    '''return a dictionary of total number of events grouped by event type for a given offset'''
+    E = {}
+    for event in events:
+        eventTimestamp = datetime.strptime(event['created_at'],'%Y-%m-%dT%H:%M:%SZ').timestamp()
+        if datetime.now().timestamp() -  eventTimestamp > offset*60:
+            break
+        try:
+            E[event['actor']['login']] += 1
+        except:
+            E[event['actor']['login']] = 1
+
+    return E
+
 def fetchEvents(user, repo):
     url = "https://api.github.com/repos/{}/{}/events".format(user,repo)
     data = requests.get(url)
@@ -60,6 +74,14 @@ def main():
     print("event type\tnumber of")
     for k in countEventsByGroup.keys():
         print("{}:  {}".format(k,countEventsByGroup[k]))
+
+    # bonus assignment
+    offset = 24*60
+    countActors = eventActors(events, offset)
+    print("in the last 24 hours the following users created events:")
+    print("event type\tnumber of")
+    for k in countActors.keys():
+        print("{}:  {}".format(k,countActors[k]))
     
 if __name__ =='__main__':
     main()
