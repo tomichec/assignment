@@ -34,24 +34,32 @@ def totalEvents(events, offset = 24*60):
             E[event['type']] = 1
 
     return E
-    
-if __name__ =='__main__':
-    user = 'pandas-dev'
-    repo = 'pandas'
 
+def fetchEvents(user, repo):
     url = "https://api.github.com/repos/{}/{}/events".format(user,repo)
     data = requests.get(url)
     
     if data.status_code != 200:
-        print("Fetching the data failed.")
-        exit()
-    
+        raise Exception("Fetching the data failed.")
+
     events = data.json()
 
-    print("average time between PullRequestEvents is:", averageTime(events))
+    return events
 
-    countEventsByGroup = totalEvents(events, 24*60)
+def main():
+    user = 'pandas-dev'
+    repo = 'pandas'
+
+    events = fetchEvents(user, repo)
+
+    print("average time between PullRequestEvents is: {} seconds".format(averageTime(events)))
+
+    offset = 24*60
+    countEventsByGroup = totalEvents(events, offset)
     print("in the last 24 hours there were the following events:")
     print("event type\tnumber of")
     for k in countEventsByGroup.keys():
         print("{}:  {}".format(k,countEventsByGroup[k]))
+    
+if __name__ =='__main__':
+    main()
