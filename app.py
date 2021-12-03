@@ -1,5 +1,5 @@
 from main import *
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, abort
 
 from markupsafe import escape
 
@@ -18,7 +18,11 @@ def hello_world():
 
 @app.route('/avgTime/<username>/<reponame>')
 def avgTime(username,reponame):
-    events = fetchEvents(username, reponame)
+    try:
+        events = fetchEvents(username, reponame)
+    except:
+        abort(404)
+
     avg    = averageTime(events)
 
     if avg == -1:
@@ -30,7 +34,11 @@ def avgTime(username,reponame):
 def groupEvents(username,reponame):
     offset  = request.args.get('offset', default=365*24*60, type=int)
 
-    events = fetchEvents(username, reponame)
+    try:
+        events = fetchEvents(username, reponame)
+    except:
+        abort(404)
+
     E = totalEvents(events,offset)
 
     return jsonify(E)
@@ -39,7 +47,11 @@ def groupEvents(username,reponame):
 def showActors(username,reponame):
     offset  = request.args.get('offset', default=365*24*60, type=int)
 
-    events = fetchEvents(username, reponame)
+    try:
+        events = fetchEvents(username, reponame)
+    except:
+        abort(404)
+
     E = eventActors(events,offset)
 
     # Generate the figure **without using pyplot**.
