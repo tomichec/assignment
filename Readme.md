@@ -38,7 +38,7 @@ matplotlib
 
 ## Running the repository
 
-Clone and enter the repository
+Assuming you have installed the dependencies correctly, clone and enter the repository
 
 ```
 git clone https://github.com/tomichec/assignment
@@ -61,3 +61,9 @@ The following endpoint will be exposed on your http://localhost:5000
 ```
 where the `<username>` is a username of a github user and `<reponame>` is a name of a repository owned by the user.
 
+The github api is limited to 100 requests per hour without authentication.
+
+For the clarity the C4 (level 1) is shown as follows:
+
+
+![C4 Level 1](c4_level1.png "diagram")
